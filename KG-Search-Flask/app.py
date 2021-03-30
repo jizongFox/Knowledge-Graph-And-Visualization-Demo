@@ -1,15 +1,20 @@
+import json
+import os
+
+import cpca
 from flask import Flask, render_template, flash, request
-from flask_restful import reqparse, abort, Api, Resource
+from flask_restful import reqparse, Api, Resource
+from jieba import posseg
+
+import raw2json
 from forms import KeywordSearchForm
 from neo4j_models import Neo4jTool
-from jieba import posseg
-import raw2json
-import json
-import cpca
 
+SECRET_KEY = os.urandom(32)
 app = Flask(__name__)
 api = Api(app)
 app.config.update(RESTFUL_JSON=dict(ensure_ascii=False))  # API中文支持
+app.config['SECRET_KEY'] = SECRET_KEY
 
 global entity_json
 neo_con = Neo4jTool()
@@ -46,7 +51,7 @@ def main():
 
 
 def is_loc(loc):
-    d = cpca.transform([loc], open_warning=False)
+    d = cpca.transform([loc])
     if str(d['省'][0]):
         return True
     if str(d['市'][0]):
@@ -148,7 +153,6 @@ class get_data(Resource):
 
 api.add_resource(get_data, '/api/<string>')
 api.add_resource(post_data, '/api')
-
 
 if __name__ == '__main__':
     app.run()

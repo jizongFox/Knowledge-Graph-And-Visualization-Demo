@@ -11,7 +11,7 @@ import cpca
 
 
 def is_loc(loc):
-    d = cpca.transform([loc], open_warning=False)
+    d = cpca.transform([loc])
     if str(d['省'][0]):
         return True
     if str(d['市'][0]):

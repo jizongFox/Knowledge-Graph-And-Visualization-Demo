@@ -4,9 +4,8 @@
 # *_*coding:utf-8 *_*
 
 
-from py2neo import Graph
 import cpca
-import neo4j
+from py2neo import Graph
 
 
 class Neo4jTool:
@@ -20,7 +19,7 @@ class Neo4jTool:
 
     def format_loc(self, val):
         loc = val
-        df = cpca.transform([loc], open_warning=False)
+        df = cpca.transform([loc])
         sheng = ''
         shi = ''
         qu = ''
@@ -37,13 +36,14 @@ class Neo4jTool:
         loc = sheng + shi + qu
         if loc == '':
             loc = str(df['地址'][0])
-        return loc
+        return loc.replace("None", "")
 
     def get_rel(self, val):
         loc = self.format_loc(val)
         sql = "MATCH (n1)<-[rel]-(n2:EVENT) WHERE n1.locationName=~'.*" + str(loc) + ".*' RETURN n1, rel, n2 LIMIT 10;"
         answer = self.graph.run(sql).data()
-        sql2 = "MATCH (n1)<-[rel]-(n2:PATIENT) WHERE n1.locationName=~'.*" + str(loc) + ".*' RETURN n1, rel, n2 LIMIT 20;"
+        sql2 = "MATCH (n1)<-[rel]-(n2:PATIENT) WHERE n1.locationName=~'.*" + str(
+            loc) + ".*' RETURN n1, rel, n2 LIMIT 20;"
         answer.extend(self.graph.run(sql2).data())
         return answer
 

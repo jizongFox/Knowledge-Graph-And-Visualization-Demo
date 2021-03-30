@@ -20,7 +20,7 @@ class Neo4jTool:
 
     def format_loc(self, val):
         loc = val
-        df = cpca.transform([loc], open_warning=False)
+        df = cpca.transform([loc])
         sheng = ''
         shi = ''
         qu = ''
@@ -37,7 +37,7 @@ class Neo4jTool:
         loc = sheng + shi + qu
         if loc == '':
             loc = str(df['地址'][0])
-        return loc
+        return loc.replace("None","")
 
     def get_rel(self, val):
         loc = self.format_loc(val)
