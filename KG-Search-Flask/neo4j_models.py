@@ -15,7 +15,7 @@ class Neo4jTool:
         print("Initialize Neo4j tools...")
 
     def connect2neo4j(self):
-        self.graph = Graph("http://localhost:7474", username="neo4j", password="123456")
+        self.graph = Graph("http://192.168.32.105:7474", username="neo4j", password="123456")
 
     def format_loc(self, val):
         loc = val

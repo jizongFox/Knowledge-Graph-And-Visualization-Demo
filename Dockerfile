@@ -1,4 +1,4 @@
-FROM neo4j:latest
+FROM neo4j:3.5.27
 COPY Import2Neo4j /var/lib/neo4j/import
 COPY . /app
 
